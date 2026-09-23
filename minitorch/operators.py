@@ -32,6 +32,52 @@ from typing import Callable, Iterable
 # $f(x) = |x - y| < 1e-2$
 
 
+
+
+
+mul = lambda x, y: x * y
+
+id = lambda x: x
+
+add = lambda x, y: x + y
+
+neg = lambda x: - x
+
+lt = lambda x, y: x < y
+
+eq = lambda x, y: x == y
+
+max = lambda x, y: x if lt(y, x) else y
+
+is_close = lambda x, y: -1e-2 < x - y < 1e-2
+
+sigmoid = lambda x:  1.0 / (1.0 + math.exp(-x)) if x >=0 else math.exp(x) / (1.0 + math.exp(x))
+
+relu = lambda x: max(x, 0)
+
+log = lambda x: math.log(x)
+
+exp = lambda x: math.exp(x)
+
+inv = lambda x: 1 / x
+
+log_back = lambda x, y: y / x 
+
+inv_back = lambda x, y: - y / (x ** 2)
+
+relu_back = lambda x, y: y if x >= 0 else 0
+
+
+
+
+
+
+
+
+
+
+
+
 # TODO: Implement for Task 0.1.
 
 
@@ -50,5 +96,41 @@ from typing import Callable, Iterable
 # - sum: sum lists
 # - prod: take the product of lists
 
+def map(f: Callable):
+    def map_(li: Iterable):
+        return [f(val) for val in li]
+    return map_
+    
+    
+def zipWith(f: Callable):
+    def zipWith_(li1: Iterable, li2: Iterable):
+        return [f(li1[i], li2[i]) for i in range(len(li1))]
+    return zipWith_
+
+
+def reduce(f: Callable, alpha: float):
+
+    def reduce_(li):
+        acc = alpha
+        for val in li:
+            acc = f(acc, val)
+        return acc
+    return reduce_
+    
+
+def negList(li: list):
+    return map(neg)(li)
+    
+
+def addLists(li1: Iterable, li2: Iterable):
+    return zipWith(add)(li1, li2)
+
+
+def sum(li: list):
+    return reduce(add, 0)(li)
+
+
+def prod(li: list):
+    return reduce(mul, 1)(li)
 
 # TODO: Implement for Task 0.3.
